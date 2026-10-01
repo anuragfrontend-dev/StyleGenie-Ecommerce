@@ -6,6 +6,7 @@ import order from '../assets/icon/order.png'
 import cartIcon from '../assets/icon/cart-icon.png'
 import { useCart } from '../context/CartContext';
 import { useFavourites } from '../context/FavouritesContext';
+import { useEffect, useState } from 'react';
 
 
 
@@ -13,6 +14,7 @@ export default function Header({ search,setSearch }){
   
   const { cart }=useCart();
   const { like }=useFavourites();
+  const[loggedInUser,setLoggedInUser]=useState();
 
   let totalLikeProducts=like.length;
 
@@ -21,6 +23,25 @@ export default function Header({ search,setSearch }){
   const isOnOrders = location.pathname==='/Orders'
 
   let totalQuantity=cart?.reduce((sum,item)=>sum+item.productQuantity,0)
+
+  useEffect(()=>{
+    const loadUser = () => {
+      const user = JSON.parse(localStorage.getItem('loggedInUser'));
+      setLoggedInUser(user);
+    }
+
+    loadUser(); 
+
+    window.addEventListener('userUpdated', loadUser);
+    window.addEventListener('storage', loadUser);
+
+
+    return () => {
+      window.removeEventListener('userUpdated', loadUser);
+      window.removeEventListener('storage', loadUser);
+    }
+  },[])
+
   
   const handleSearch=(event)=>{
     setSearch(event.target.value);
@@ -63,7 +84,14 @@ export default function Header({ search,setSearch }){
           </div>
            <div className='cart-text'>Cart</div>
         </Link>
-        <img src='/user.png' className='profile-pic' />
+        <Link to={'/Profile'}>
+          {loggedInUser?.profilePic?(
+            <img src={loggedInUser.profilePic} style={{objectFit:'cover', objectPosition:'top'}} 
+            className='profile-pic' />
+          ):(
+            <img src='/user.png' className='profile-pic' />
+          )}
+        </Link>
       </nav>
     </header>
   )
