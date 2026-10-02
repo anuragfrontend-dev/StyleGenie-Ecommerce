@@ -8,8 +8,17 @@ export function HomePage({products,displayProducts,setDisplayProducts,
  setQuantity,quantity,addedMessageId,setAddedMessageId,search,setSearch}) {
   
   const[categoriesActive,setCategoriesActive]=useState('');
+  const[activeRange,setActiveRange]=useState('all');
   
   const handleCategories=(categorie)=>{
+    if(categorie===categoriesActive){
+      setCategoriesActive('all');
+      setDisplayProducts(products);
+      return;
+    }
+
+    setCategoriesActive(categorie);
+
     if(categorie==='all'){
       setDisplayProducts(products);
     }
@@ -18,6 +27,7 @@ export function HomePage({products,displayProducts,setDisplayProducts,
         return(product.category===categorie)
       })
       setDisplayProducts(filtered)
+      setActiveRange('all');
     }
   }
   
@@ -29,6 +39,7 @@ export function HomePage({products,displayProducts,setDisplayProducts,
       )
     });
     setDisplayProducts(filtered);
+    setCategoriesActive('all');
   }
 
   const handleAllFilter=()=>{
@@ -46,11 +57,12 @@ export function HomePage({products,displayProducts,setDisplayProducts,
         handleRange={handleRange}
         handleCategories={handleCategories}
         setCategoriesActive={setCategoriesActive}
+        activeRange={activeRange}
+        setActiveRange={setActiveRange}
       />
       <SideBar 
         handleCategories={handleCategories}
         categoriesActive={categoriesActive} 
-        setCategoriesActive={setCategoriesActive}
       />
       <section className="cart-container">
         <DisplayProduct 
