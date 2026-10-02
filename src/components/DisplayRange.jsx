@@ -1,8 +1,8 @@
 import './DisplayRange.css'
-import { useState } from 'react';
 
-export function DisplayRange({handleAllFilter,handleRange,handleCategories,setCategoriesActive}) {
-  const[activeRange,setActiveRange]=useState('all');
+export function DisplayRange({handleAllFilter,handleRange,
+  setCategoriesActive,setActiveRange,activeRange}) {
+  
   
   return (
     <div className="range-container">
@@ -10,7 +10,6 @@ export function DisplayRange({handleAllFilter,handleRange,handleCategories,setCa
       onClick={()=>{
         handleAllFilter();
         setActiveRange('all');
-        handleCategories('all');
         setCategoriesActive('all');
         }}>
       All
