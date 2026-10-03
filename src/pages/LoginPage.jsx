@@ -23,6 +23,7 @@ export function LoginPage() {
 
     if (user) {
       localStorage.setItem("loggedInUser", JSON.stringify(user));
+      localStorage.removeItem('isGuest');
       window.dispatchEvent(new Event("userUpdated"));
       navigate(from, { replace: true }); 
 
@@ -37,6 +38,12 @@ export function LoginPage() {
   
   const handlePassword=()=>{
     setPasswordShow(!passwordShow);
+  }
+
+  const handleGuest=()=>{
+    localStorage.setItem('isGuest','true');
+    localStorage.removeItem('loggedInUser');
+    navigate('/');
   }
 
   return (
@@ -89,6 +96,13 @@ export function LoginPage() {
           </div>
 
           <button className="login-btn" type='submit'>Log In</button>
+
+          <div className='or-section'>
+            <div></div>
+            <span>OR</span>
+            <div></div>
+          </div>
+          <button className='guest-btn' onClick={handleGuest}>Continue as Guest</button>
 
           <p className="signup-text">
             Don't have an account? <Link to="/Signup" style={{fontWeight:'bold', color:'black'}}>Sign up</Link>

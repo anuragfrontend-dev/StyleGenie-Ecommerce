@@ -46,33 +46,29 @@ export default function App() {
       <Route path='/Login' element={<LoginPage />} />
       <Route path='/Signup' element={<SignupPage />} />
       <Route path='/' element={
-        <ProtectedRoute>
-          <HomePage
-            products={products}
-            setProducts={setProducts}
-            displayProducts={displayProducts}
-            setDisplayProducts={setDisplayProducts}
-            setQuantity={setQuantity}
-            quantity={quantity}
-            addedMessageId={addedMessageId}
-            setAddedMessageId={setAddedMessageId}
-            setSearch={setSearch}
-            search={search}
-          />
-        </ProtectedRoute>
+        <HomePage
+          products={products}
+          setProducts={setProducts}
+          displayProducts={displayProducts}
+          setDisplayProducts={setDisplayProducts}
+          setQuantity={setQuantity}
+          quantity={quantity}
+          addedMessageId={addedMessageId}
+          setAddedMessageId={setAddedMessageId}
+          setSearch={setSearch}
+          search={search}
+        />
       } />
       <Route path='/Favourites' element={
-        <ProtectedRoute>
-          <FavouritesPage
-            products={products}
-            quantity={quantity}
-            setQuantity={setQuantity}
-            setAddedMessageId={setAddedMessageId}
-            addedMessageId={addedMessageId}
-            setSearch={setSearch}
-            search={search}
-          />
-        </ProtectedRoute>
+        <FavouritesPage
+          products={products}
+          quantity={quantity}
+          setQuantity={setQuantity}
+          setAddedMessageId={setAddedMessageId}
+          addedMessageId={addedMessageId}
+          setSearch={setSearch}
+          search={search}
+        />
       } />
 
       <Route path='/Cart' element={
