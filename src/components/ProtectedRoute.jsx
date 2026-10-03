@@ -4,10 +4,11 @@ export function ProtectedRoute({children}){
   
   const user=localStorage.getItem('loggedInUser');
   const location=useLocation();
+  
 
-  if(!user){
-    return <Navigate to="/Login" state={{ from: location }} replace />
+  if(user){
+    return children;
   }
-
-  return children;
+  
+  return <Navigate to="/Login" state={{ from: location }} replace />
 }
