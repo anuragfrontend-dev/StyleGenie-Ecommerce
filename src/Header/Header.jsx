@@ -1,5 +1,5 @@
 import { Search,Heart } from 'lucide-react';
-import { Link,useLocation} from 'react-router-dom';
+import { Link,NavLink} from 'react-router-dom';
 import './Header.css'
 import logo from '../assets/icon/logo.png'
 import order from '../assets/icon/order.png'
@@ -17,10 +17,6 @@ export default function Header({ search,setSearch }){
   const[loggedInUser,setLoggedInUser]=useState();
 
   let totalLikeProducts=like.length;
-
-  const location=useLocation();
-  const isOnFavourites = location.pathname==='/Favourites';
-  const isOnOrders = location.pathname==='/Orders'
 
   let totalQuantity=cart?.reduce((sum,item)=>sum+item.productQuantity,0)
 
@@ -66,16 +62,16 @@ export default function Header({ search,setSearch }){
         />
       </div>
       <nav className="right-section">
-        <Link to={isOnOrders? '/':'/Orders'} className='nav-links'>
+        <NavLink to='/Orders' className={({isActive})=> isActive? 'nav-links active':'nav-links'}>
           <img src={order} className='order-icon' />
           <div className='order-text'>Orders</div>
-        </Link>
-        <Link  to={isOnFavourites? '/':'/Favourites'} className='nav-links counter' >
+        </NavLink>
+        <NavLink  to='/Favourites' className={({isActive})=> isActive? 'nav-links counter active':'nav-links counter'} >
           <Heart height={20} />
           <div className='fav-text'>Favourites</div>
           {totalLikeProducts >0 && 
           (<div className="likes-count">{totalLikeProducts}</div>)}
-        </Link>
+        </NavLink>
         <Link to="/Cart" className='nav-links counter'>
           <div>
             <img src={cartIcon} className='cart-icon' />
