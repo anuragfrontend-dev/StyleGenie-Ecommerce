@@ -48,7 +48,18 @@
   align-items: center;
   gap: 5px;
   margin-right: 10px;
+  background-color: transparent;
 }
+
+.nav-links.active{
+  text-decoration: underline !important;
+  text-decoration-color: rgb(35, 157, 239) !important;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+  background-color: #fff;
+  color: black;
+}
+
 
 .logo {
   height: 30px;
