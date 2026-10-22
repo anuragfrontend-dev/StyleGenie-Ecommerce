@@ -1,7 +1,11 @@
 import './SideBar.css'
 
-export function SideBar({ handleCategories,categoriesActive }) {
-  
+interface SideBarProp {
+  handleCategories: (category: string) => void;
+  categoriesActive: string;
+}
+
+export function SideBar({ handleCategories, categoriesActive }: SideBarProp) {
 
   return (
     <div className="side-bar">
@@ -9,17 +13,17 @@ export function SideBar({ handleCategories,categoriesActive }) {
         <div className='popular-text'>Popular</div>
       </div>
       <div className="categorie-items">
-        <button className={`side-bar-categorie ${categoriesActive==='sports-accessories'? 'categoryActive':''}`} 
-        onClick={() => {
-          handleCategories('sports-accessories');
-        }}>
+        <button className={`side-bar-categorie ${categoriesActive === 'sports-accessories' ? 'categoryActive' : ''}`}
+          onClick={() => {
+            handleCategories('sports-accessories');
+          }}>
           <div className='side-bar-profile'>
             <img src="toy.webp" />
           </div>
-           Toys
+          Toys
         </button>
-        <button className={`side-bar-categorie ${categoriesActive==='groceries'? 'categoryActive':''}`}
-          onClick={()=>{
+        <button className={`side-bar-categorie ${categoriesActive === 'groceries' ? 'categoryActive' : ''}`}
+          onClick={() => {
             handleCategories('groceries');
           }}>
           <div className='side-bar-profile'>
@@ -27,7 +31,7 @@ export function SideBar({ handleCategories,categoriesActive }) {
           </div>
           Foods
         </button>
-        <button className={`side-bar-categorie ${categoriesActive==='smartphones'? 'categoryActive':''}`}
+        <button className={`side-bar-categorie ${categoriesActive === 'smartphones' ? 'categoryActive' : ''}`}
           onClick={() => {
             handleCategories('smartphones');
           }}>
@@ -36,34 +40,34 @@ export function SideBar({ handleCategories,categoriesActive }) {
           </div>
           Phone
         </button>
-        <button className={`side-bar-categorie ${categoriesActive==='mens-shirts'? 'categoryActive':''}`}
+        <button className={`side-bar-categorie ${categoriesActive === 'mens-shirts' ? 'categoryActive' : ''}`}
           onClick={() => {
             handleCategories('mens-shirts');
           }}>
           <div className='side-bar-profile'>
-            <img src="men.webp"  />
+            <img src="men.webp" />
           </div>
           Men
         </button>
-        <button className={`side-bar-categorie ${categoriesActive==='mens-shoes'? 'categoryActive':''}`}
+        <button className={`side-bar-categorie ${categoriesActive === 'mens-shoes' ? 'categoryActive' : ''}`}
           onClick={() => {
             handleCategories('mens-shoes');
           }}>
           <div className='side-bar-profile'>
-            <img src="mens-shoes.webp"  />
+            <img src="mens-shoes.webp" />
           </div>
           Shoes
         </button>
-        <button className={`side-bar-categorie ${categoriesActive==='fragrances'? 'categoryActive':''}`}
-          onClick={()=>{
+        <button className={`side-bar-categorie ${categoriesActive === 'fragrances' ? 'categoryActive' : ''}`}
+          onClick={() => {
             handleCategories('fragrances');
           }}>
           <div className='side-bar-profile'>
-            <img src="fragrances.webp"  />
+            <img src="fragrances.webp" />
           </div>
           Perfume
         </button>
-        <button className={`side-bar-categorie ${categoriesActive==='laptops'? 'categoryActive':''}`}
+        <button className={`side-bar-categorie ${categoriesActive === 'laptops' ? 'categoryActive' : ''}`}
           onClick={() => {
             handleCategories('laptops');
           }}>
@@ -72,8 +76,8 @@ export function SideBar({ handleCategories,categoriesActive }) {
           </div>
           Laptop
         </button>
-        <button className={`side-bar-categorie ${categoriesActive==='mens-watches'? 'categoryActive':''}`} 
-          onClick={()=>{
+        <button className={`side-bar-categorie ${categoriesActive === 'mens-watches' ? 'categoryActive' : ''}`}
+          onClick={() => {
             handleCategories('mens-watches');
           }}>
           <div className='side-bar-profile'>
@@ -81,8 +85,8 @@ export function SideBar({ handleCategories,categoriesActive }) {
           </div>
           Watch
         </button>
-        <button className={`side-bar-categorie ${categoriesActive==='skin-care'? 'categoryActive':''}`} 
-          onClick={()=>{
+        <button className={`side-bar-categorie ${categoriesActive === 'skin-care' ? 'categoryActive' : ''}`}
+          onClick={() => {
             handleCategories('skin-care');
           }}>
           <div className='side-bar-profile'>
@@ -90,8 +94,8 @@ export function SideBar({ handleCategories,categoriesActive }) {
           </div>
           Skin-care
         </button>
-        <button className={`side-bar-categorie ${categoriesActive==='womens-dresses'? 'categoryActive':''}`} 
-          onClick={()=>{
+        <button className={`side-bar-categorie ${categoriesActive === 'womens-dresses' ? 'categoryActive' : ''}`}
+          onClick={() => {
             handleCategories('womens-dresses');
           }}>
           <div className='side-bar-profile'>
@@ -99,8 +103,8 @@ export function SideBar({ handleCategories,categoriesActive }) {
           </div>
           Women
         </button>
-        <button className={`side-bar-categorie ${categoriesActive==='kitchen-accessories'? 'categoryActive':''}`}
-          onClick={()=>{
+        <button className={`side-bar-categorie ${categoriesActive === 'kitchen-accessories' ? 'categoryActive' : ''}`}
+          onClick={() => {
             handleCategories('kitchen-accessories');
           }}>
           <div className='side-bar-profile'>
@@ -108,8 +112,8 @@ export function SideBar({ handleCategories,categoriesActive }) {
           </div>
           Kitchen
         </button>
-        <button className={`side-bar-categorie ${categoriesActive==='furniture'? 'categoryActive':''}`}
-          onClick={()=>{
+        <button className={`side-bar-categorie ${categoriesActive === 'furniture' ? 'categoryActive' : ''}`}
+          onClick={() => {
             handleCategories('furniture');
           }}>
           <div className='side-bar-profile'>

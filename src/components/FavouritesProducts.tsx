@@ -1,47 +1,59 @@
 import { Link } from 'react-router-dom';
-import { Star, CircleCheck,Heart } from 'lucide-react';
+import { Star, CircleCheck, Heart } from 'lucide-react';
 import { money } from '../utils/money';
 import './FavouritesProducts.css'
 import { useCart } from '../context/CartContext';
 import { useFavourites } from '../context/FavouritesContext';
+import { Dispatch, SetStateAction } from 'react';
+import { Product } from '../types';
 
-export function FavouritesProducts({products,quantity,setQuantity,
-  addedMessageId,setAddedMessageId,search}) {
-  
-  const { dispatch:cartDispatch }=useCart();
-  const { like,dispatch:likeDispatch }=useFavourites();
-  
-  const likeProducts=products.filter((product)=>(like.includes(product.id)));
 
-  const handleSelector=(e,id)=>{
-    const val=Number(e.target.value);
-    setQuantity(prev=>({...prev,[id]:val}))
+interface FaviouritesProductProp {
+  products: Product[];
+  quantity: Record<number, number>;
+  setQuantity: Dispatch<SetStateAction<Record<number, number>>>;
+  addedMessageId: number | null;
+  setAddedMessageId: Dispatch<SetStateAction<number | null>>;
+  search: string;
+}
+
+export function FavouritesProducts({ products, quantity, setQuantity,
+  addedMessageId, setAddedMessageId, search }: FaviouritesProductProp) {
+
+  const { dispatch: cartDispatch } = useCart();
+  const { like, dispatch: likeDispatch } = useFavourites();
+
+  const likeProducts = products.filter((product) => (like.includes(product.id)));
+
+  const handleSelector = (e: React.ChangeEvent<HTMLSelectElement>, id: number) => {
+    const val = Number(e.target.value);
+    setQuantity(prev => ({ ...prev, [id]: val }))
   }
 
-  const handleAddedMessage=(id)=>{
+  const handleAddedMessage = (id: number) => {
     setAddedMessageId(id);
 
-    setTimeout(()=>{
+    setTimeout(() => {
       setAddedMessageId(null)
-    },1000);
+    }, 1000);
   }
 
-  const searchData=likeProducts.filter((likeItem)=>
-    likeItem?.title?.toLowerCase().includes(search?.toLowerCase()||'')
+  const searchData = likeProducts.filter((likeItem) =>
+    likeItem?.title?.toLowerCase().includes(search?.toLowerCase() || '')
   )
 
-  
+
   return (
     <>
       {searchData.length === 0 ?
         (
-        <div className='empty-container'>
-          <div className='empty-text'>Empty like products</div>
-          <Link to='/'>
-            <button className='view-product'>View Products</button>
-          </Link>
-        </div>
-      ) : (
+          <div className='empty-container'>
+            <div className='empty-text'>Empty like products</div>
+            <Link to='/'>
+              <button className='view-product'>View Products</button>
+            </Link>
+          </div>
+        ) : (
           searchData.map((product) => (
             <div className="cart" key={product.id}>
               <div className='product-image-container'>
@@ -50,12 +62,12 @@ export function FavouritesProducts({products,quantity,setQuantity,
                   fill={like.includes(product.id) ? '#ef4444' : 'none'}
                   color={like.includes(product.id) ? '#ef4444' : '#dcdcdc'}
                   className='heart-icon'
-                  onClick={()=>{
+                  onClick={() => {
                     likeDispatch({
-                      type:'ADD_TO_FAVOURITES',
-                      payload:product.id
+                      type: 'ADD_TO_FAVOURITES',
+                      payload: product.id
                     })
-                 }}
+                  }}
                 />
               </div>
               <div className="product-details">
@@ -69,16 +81,9 @@ export function FavouritesProducts({products,quantity,setQuantity,
                   </div>
                   <select className='product-selector' value={quantity[product.id] || 1}
                     onChange={(e) => handleSelector(e, product.id)} >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                      <option key={num} value={num}>{num}</option>
+                    ))}
                   </select>
                 </div>
                 <div className='flex-content'>
@@ -92,13 +97,13 @@ export function FavouritesProducts({products,quantity,setQuantity,
                 </div>
                 <button className='add-to-cart-button' onClick={() => {
                   cartDispatch({
-                    type:'ADD_TO_CART',
-                    payload:{
-                      id:product.id,
-                      thumbnail:product.thumbnail,
-                      title:product.title,
-                      price:product.price,
-                      qty:quantity[product.id]||1
+                    type: 'ADD_TO_CART',
+                    payload: {
+                      id: product.id,
+                      thumbnail: product.thumbnail,
+                      title: product.title,
+                      price: product.price,
+                      qty: quantity[product.id] || 1
                     }
                   })
                   handleAddedMessage(product.id);
