@@ -3,22 +3,28 @@ import { money } from "../utils/money";
 import dayjs from 'dayjs'
 import { useCart } from "../context/CartContext";
 import './PaymentSummary.css'
+import { Dispatch, SetStateAction } from "react";
+import { Order } from "../types";
 
-export function PaymentSummary({ setOrders }) {
-  const navigate=useNavigate();
-  const {cart, dispatch }=useCart();
+interface PaymentSummaryProp {
+  setOrders: Dispatch<SetStateAction<Order[]>>
+}
 
-  const onOrder = (totalAmount, totalQuantity) => {
-    const newOrder = {
+export function PaymentSummary({ setOrders }: PaymentSummaryProp) {
+  const navigate = useNavigate();
+  const { cart, dispatch } = useCart();
+
+  const onOrder = (totalAmount: number, totalQuantity: number) => {
+    const newOrder: Order = {
       orderId: crypto.randomUUID(),
       totalAmount,
       totalQuantity,
       items: cart,
-      date: dayjs()
+      date: dayjs().toISOString()
     }
 
-    setOrders(prev => ([newOrder,...prev]));
-    dispatch({type:'CLEAR_CART'})
+    setOrders(prev => ([newOrder, ...prev]));
+    dispatch({ type: 'CLEAR_CART' })
   }
 
   const totalQuantity = cart.reduce((sum, cartItem) => sum + cartItem.productQuantity, 0);
@@ -73,15 +79,15 @@ export function PaymentSummary({ setOrders }) {
         <span>Total Amount</span>
         <span className='total-amount'>₹{Math.round(totalAmount).toLocaleString()}</span>
       </div>
-      
+
       <button
         className="buy-btn"
         disabled={cart.length === 0}
-        onClick={() =>{
-          onOrder(totalAmount,totalQuantity)
+        onClick={() => {
+          onOrder(totalAmount, totalQuantity)
           navigate('/Orders')
         }}
-          >Place Order</button>
+      >Place Order</button>
     </div>
   )
 }

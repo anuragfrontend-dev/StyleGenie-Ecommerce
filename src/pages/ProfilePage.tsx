@@ -2,57 +2,63 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import "./ProfilePage.css";
+import { User } from '../types'
 
 export function ProfilePage() {
-  const [user, setUser] = useState(null);
-  const [pic, setPic] = useState("");
-  const [editMode, setEditMode] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [pic, setPic] = useState<string>("");
+  const [editMode, setEditMode] = useState<boolean>(false);
   const [form, setForm] = useState({ name: "", email: "" });
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const loggedUser = JSON.parse(localStorage.getItem("loggedInUser"));
-    if (loggedUser) {
+    const storedLoggedUser = localStorage.getItem("loggedInUser");
+    if (storedLoggedUser) {
+      const loggedUser = JSON.parse(storedLoggedUser) as User;
       setUser(loggedUser);
       setForm({ name: loggedUser.name || "", email: loggedUser.email });
       setPic(loggedUser.profilePic || "");
     }
   }, []);
 
-  const saveToStorage = (updatedUser) => {
+  const saveToStorage = (updatedUser: User) => {
     localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
     window.dispatchEvent(new Event("userUpdated"));
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const newUsers = users.map(u => u.email === user.email? updatedUser : u);
+    const users: User[] = JSON.parse(localStorage.getItem("users") || '[]');
+    const newUsers = users.map(u => u.email === updatedUser.email ? updatedUser : u);
     localStorage.setItem("users", JSON.stringify(newUsers));
     setUser(updatedUser);
   };
 
-  const handleLogout=()=>{
+  const handleLogout = () => {
     localStorage.removeItem('loggedInUser');
     window.dispatchEvent(new Event("userUpdated"));
-    navigate('/Login',{replace:true});
+    navigate('/Login', { replace: true });
   }
 
-  const handlePicChange = (e) => {
-    const file = e.target.files[0];
+  const handlePicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onloadend = () => {
-      setPic(reader.result);
-      saveToStorage({...user, profilePic: reader.result });
+      const result = reader.result as string;
+      setPic(result);
+      if (!user) return;
+      saveToStorage({ ...user, profilePic: result });
     };
     reader.readAsDataURL(file);
   };
 
   const handleRemovePic = () => {
     setPic("");
-    const { profilePic,...rest } = user;
-    saveToStorage(rest);
+    if (!user) return;
+    const { profilePic, ...rest } = user;
+    saveToStorage(rest as User);
   };
 
   const handleSaveDetails = () => {
-    saveToStorage({...user, name: form.name, email: form.email });
+    if (!user) return;
+    saveToStorage({ ...user, name: form.name, email: form.email });
     setEditMode(false);
   };
 
@@ -66,9 +72,9 @@ export function ProfilePage() {
         <div className="pic-container">
           <img
             className="profile-img"
-            src={pic ||'user.png'}
+            src={pic || 'user.png'}
             alt="profile"
-            onError={(e)=>e.target.src='/user.png'}
+            onError={(e) => (e.currentTarget as HTMLImageElement).src = '/user.png'}
           />
           <label className="pic-add-btn">
             +
@@ -78,14 +84,14 @@ export function ProfilePage() {
 
         {pic && <button className="remove-btn" onClick={handleRemovePic}>Remove photo</button>}
 
-        {!editMode? (
+        {!editMode ? (
           <>
             <h2 className="profile-name">{user.name}</h2>
             <p className="profile-email">{user.email}</p>
 
             <div className="info-box">
               <p><strong>Email:</strong> {user.email}</p>
-              <p><strong>Username:</strong> {`${user.name.replaceAll(' ','').toLowerCase()+user.name.length}`}</p>
+              <p><strong>Username:</strong> {`${user.name.replaceAll(' ', '').toLowerCase() + user.name.length}`}</p>
             </div>
 
             <button className="primary-btn" onClick={() => setEditMode(true)}>Edit Profile</button>
@@ -93,8 +99,20 @@ export function ProfilePage() {
           </>
         ) : (
           <>
-            <input className="profile-input" value={form.name} onChange={(e) => setForm({...form, name: e.target.value })} placeholder="Name" />
-            <input className="profile-input" value={form.email} onChange={(e) => setForm({...form, email: e.target.value })} placeholder="Email" />
+            <input className="profile-input"
+              value={form.name}
+              onChange={(e) => {
+                setForm({ ...form, name: e.target.value })
+              }}
+              placeholder="Name"
+            />
+
+            <input className="profile-input"
+              value={form.email} onChange={(e) => {
+                setForm({ ...form, email: e.target.value })
+              }}
+              placeholder="Email"
+            />
             <div className="btn-row">
               <button className="secondary-btn" onClick={() => setEditMode(false)}>Cancel</button>
               <button className="primary-btn" onClick={handleSaveDetails}>Save</button>
