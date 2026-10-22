@@ -10,16 +10,17 @@ import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { ProfilePage } from './pages/ProfilePage';
+import { Product, Order } from './types';
 
 import './App.css'
 
 export default function App() {
-  const [products, setProducts] = useState([]);
-  const [displayProducts, setDisplayProducts] = useState([]);
-  const [quantity, setQuantity] = useState({});
-  const [addedMessageId, setAddedMessageId] = useState(null);
-  const [orders, setOrders] = useState(JSON.parse(localStorage.getItem('orders')) || []);
-  const [search, setSearch] = useState('')
+  const [products, setProducts] = useState<Product[]>([]);
+  const [displayProducts, setDisplayProducts] = useState<Product[]>([]);
+  const [quantity, setQuantity] = useState<Record<number, number>>({});
+  const [addedMessageId, setAddedMessageId] = useState<number | null>(null);
+  const [orders, setOrders] = useState<Order[]>(JSON.parse(localStorage.getItem('orders') || '[]'));
+  const [search, setSearch] = useState<string>('')
 
   async function getData() {
     try {
@@ -48,7 +49,6 @@ export default function App() {
       <Route path='/' element={
         <HomePage
           products={products}
-          setProducts={setProducts}
           displayProducts={displayProducts}
           setDisplayProducts={setDisplayProducts}
           setQuantity={setQuantity}
@@ -74,7 +74,6 @@ export default function App() {
       <Route path='/Cart' element={
         <ProtectedRoute>
           <CartPage
-            orders={orders}
             setOrders={setOrders}
           />
         </ProtectedRoute>

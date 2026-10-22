@@ -4,29 +4,29 @@ import { useCallback } from "react";
 import './CartProducts.css'
 
 export function CartProducts() {
-  const { cart, dispatch }=useCart();
+  const { cart, dispatch } = useCart();
 
-  const updateQuantity = useCallback((id,newQuantity)=>{
+  const updateQuantity = useCallback((id: number, newQuantity: number) => {
     dispatch({
-      type:'UPDATE_QUANTITY',
-      payload:{
-        id:id,
-        qty:newQuantity
+      type: 'UPDATE_QUANTITY',
+      payload: {
+        id: id,
+        qty: newQuantity
       }
     })
-  },[dispatch]);
+  }, [dispatch]);
 
-  const removeItem = useCallback((id)=>{
+  const removeItem = useCallback((id: number) => {
     dispatch({
-      type:'REMOVE_FROM_CART',
-      payload:{id}
+      type: 'REMOVE_FROM_CART',
+      payload: { id }
     })
-  },[dispatch]);
+  }, [dispatch]);
 
   return (
     <div className="cart-items">
       {cart.map((cartItem) => (
-        <CartItem 
+        <CartItem
           key={cartItem.productId}
           cartItem={cartItem}
           onQuantityChange={updateQuantity}

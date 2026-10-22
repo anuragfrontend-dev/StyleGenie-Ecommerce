@@ -1,8 +1,15 @@
 import { memo } from "react";
 import { money } from "../utils/money";
+import { CartItem as CartItemType } from "../types";
 
 
-function CartItem({ cartItem, onQuantityChange, onRemove }) {
+interface CartItemProp {
+  cartItem: CartItemType;
+  onQuantityChange: (productId: number, productQuantity: number) => void;
+  onRemove: (productId: number) => void;
+}
+
+function CartItem({ cartItem, onQuantityChange, onRemove }: CartItemProp) {
 
   return (
     <div className="cart-item" >
@@ -13,7 +20,7 @@ function CartItem({ cartItem, onQuantityChange, onRemove }) {
         <div className='details'>
           <div>Quantity:{cartItem.productQuantity}
             <select value={cartItem.productQuantity} onChange={(e) => {
-              onQuantityChange(cartItem.productId, e.target.value)
+              onQuantityChange(cartItem.productId, +e.target.value)
             }}>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                 <option key={num} value={num}>{num}</option>
@@ -22,7 +29,7 @@ function CartItem({ cartItem, onQuantityChange, onRemove }) {
           </div>
           <button className='remove-buttom'
             onClick={() => {
-             onRemove(cartItem.productId)
+              onRemove(cartItem.productId)
             }}>remove</button>
         </div>
       </div>

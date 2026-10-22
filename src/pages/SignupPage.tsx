@@ -1,25 +1,26 @@
 import { useState } from "react";
 import { EyeOff, Eye } from 'lucide-react';
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './SignupPage.css'
+import { User } from "../types";
 
 export function SignupPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState('');
-  const [profilePic, setProfilePic]=useState('');
-  const [passwordShow, setPasswordShow] = useState(false);
-  const [error, setError] = useState("");
-  const navigate=useNavigate();
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>('');
+  const [passwordShow, setPasswordShow] = useState<boolean>(false);
+  const [profilePic, setProfilePic] = useState<string>('')
+  const [error, setError] = useState<string>("");
+  const navigate = useNavigate();
 
   const handlePassword = () => {
     setPasswordShow(!passwordShow);
   }
 
 
-  const handleSignup = (e) => {
+  const handleSignup = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
 
     if (users.find(u => u.email === email)) {
       setError('User alredy exists');
@@ -49,14 +50,14 @@ export function SignupPage() {
         <form className="signup-card" onSubmit={handleSignup}>
           <h3>Welcome to StyleGenie</h3>
           <p className="subtitle">Please sign up to your account</p>
-          
+
           <div className="input-group">
             <label>Name</label>
-            <input 
+            <input
               type="text"
-              placeholder="Enter your name" 
+              placeholder="Enter your name"
               value={name}
-              onChange={(e)=>setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
               required
             />
           </div>
@@ -82,16 +83,18 @@ export function SignupPage() {
               required
             />
             {passwordShow ?
-              <EyeOff height={16} width={16} color='#300' className='signup-passwordToggle' onClick={handlePassword} />
-              : <Eye height={16} width={16} color='#300' className='signup-passwordToggle' onClick={handlePassword} />}
+              <EyeOff height={16} width={16} color='#300' className='signup-passwordToggle'
+                onClick={handlePassword} />
+              : <Eye height={16} width={16} color='#300' className='signup-passwordToggle'
+                onClick={handlePassword} />}
           </div>
-          
+
           {error && (<p className="error-text" style={{ color: 'red' }} >{error}</p>)}
 
           <div className="signup-options">
             <label><input type="checkbox" /> Remember me</label>
           </div>
-          
+
           <button className="signup-btn" type='submit'>Sign up</button>
 
 
