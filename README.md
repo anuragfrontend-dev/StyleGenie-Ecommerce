@@ -1,8 +1,8 @@
 # 👗 StyleGenie - Fashion E-commerce Platform
 
-Live Demo: [https://style-genie-ecommerce-react.vercel.app/]
+Live Demo: [https://stylegenie-ecommerce.vercel.app/]
 
-A fully responsive fashion e-commerce web app built with React.
+A fully responsive fashion e-commerce web app built with React and TypeScript.
 
 ### 🚀 Features
 - **Product Discovery:** Search functionality with  Category & Price Filtering 
@@ -14,7 +14,7 @@ A fully responsive fashion e-commerce web app built with React.
 - **Responsive:** Fully responsive for mobile, tablet & desktop
 
 ### 🛠️ Tech Stack
-- React.js, React Router DOM
+- React.js,TypeScript React Router DOM
 - Context API, useReducer
 - Pure CSS3 / Custom CSS
 - Local Storage 
