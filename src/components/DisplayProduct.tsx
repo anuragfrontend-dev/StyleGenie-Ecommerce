@@ -1,10 +1,12 @@
 import { Star, CircleCheck, Heart } from 'lucide-react';
 import { money } from '../utils/money';
-import { useCart } from '../context/CartContext';
-import { useFavourites } from '../context/FavouritesContext';
 import './DisplayProduct.css'
 import { Dispatch, SetStateAction } from 'react';
 import { Product } from '../types';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../stores/store';
+import { addToCart } from '../stores/cartSlice';
+import { addToFav } from '../stores/likeSlice';
 
 interface DisplayProductProp {
   displayProducts: Product[];
@@ -17,8 +19,9 @@ interface DisplayProductProp {
 
 export function DisplayProduct({ displayProducts,
   setQuantity, quantity, addedMessageId, setAddedMessageId, search }: DisplayProductProp) {
-  const { dispatch: cartDispatch } = useCart();
-  const { like, dispatch: likeDispatch } = useFavourites();
+  const cartDispatch=useDispatch();
+  const likeDispatch=useDispatch();
+  const { like }= useSelector((state:RootState)=>state.like)
 
   const handleAddedMessage = (id: number) => {
     setAddedMessageId(id);
@@ -49,10 +52,7 @@ export function DisplayProduct({ displayProducts,
               color={like.includes(product.id) ? '#ef4444' : '#dcdcdc'}
               className='heart-icon'
               onClick={() => {
-                likeDispatch({
-                  type: 'ADD_TO_FAVOURITES',
-                  payload: product.id
-                })
+                likeDispatch(addToFav(product.id));
               }}
             />
           </div>
@@ -60,10 +60,10 @@ export function DisplayProduct({ displayProducts,
             <div className='product-name'>{product.title}</div>
             <div className="content">
               <div className='product-rating' style={{
-                background: product.rating > 4 ? '#10b981'
-                  : product.rating > 3 ? '#f59e0b' : '#ef4444'
+                background: (product.rating?? 0) > 4 ? '#10b981'
+                  : (product.rating?? 0) > 3 ? '#f59e0b' : '#ef4444'
               }}>
-                {product.rating?.toFixed(1)} <Star color='white' height={18} />
+                {(product.rating?? 0).toFixed(1)} <Star color='white' height={18} />
               </div>
               <select className='product-selector'
                 value={quantity[product.id] || 1}
@@ -84,16 +84,10 @@ export function DisplayProduct({ displayProducts,
             </div>
             <button className='add-to-cart-button'
               onClick={() => {
-                cartDispatch({
-                  type: 'ADD_TO_CART',
-                  payload: {
-                    id: product.id,
-                    thumbnail: product.thumbnail,
-                    title: product.title,
-                    price: product.price,
-                    qty: quantity[product.id] || 1
-                  }
-                })
+                cartDispatch(addToCart({
+                  ...product,
+                  qty: quantity[product.id] || 1,
+                }))
                 handleAddedMessage(product.id);
               }}>
               Add to Cart

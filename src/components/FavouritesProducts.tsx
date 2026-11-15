@@ -2,11 +2,12 @@ import { Link } from 'react-router-dom';
 import { Star, CircleCheck, Heart } from 'lucide-react';
 import { money } from '../utils/money';
 import './FavouritesProducts.css'
-import { useCart } from '../context/CartContext';
-import { useFavourites } from '../context/FavouritesContext';
 import { Dispatch, SetStateAction } from 'react';
 import { Product } from '../types';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../stores/store';
+import { addToCart } from '../stores/cartSlice';
+import { addToFav } from '../stores/likeSlice';
 
 interface FaviouritesProductProp {
   products: Product[];
@@ -20,8 +21,10 @@ interface FaviouritesProductProp {
 export function FavouritesProducts({ products, quantity, setQuantity,
   addedMessageId, setAddedMessageId, search }: FaviouritesProductProp) {
 
-  const { dispatch: cartDispatch } = useCart();
-  const { like, dispatch: likeDispatch } = useFavourites();
+  const cartDispatch=useDispatch();
+  const likeDispatch=useDispatch();
+
+  const {like}=useSelector((state:RootState)=>state.like)
 
   const likeProducts = products.filter((product) => (like.includes(product.id)));
 
@@ -63,10 +66,7 @@ export function FavouritesProducts({ products, quantity, setQuantity,
                   color={like.includes(product.id) ? '#ef4444' : '#dcdcdc'}
                   className='heart-icon'
                   onClick={() => {
-                    likeDispatch({
-                      type: 'ADD_TO_FAVOURITES',
-                      payload: product.id
-                    })
+                    likeDispatch(addToFav(product.id));
                   }}
                 />
               </div>
@@ -74,8 +74,8 @@ export function FavouritesProducts({ products, quantity, setQuantity,
                 <div className='product-name'>{product.title}</div>
                 <div className="content">
                   <div className='product-rating' style={{
-                    background: product.rating > 4 ? '#10b981'
-                      : product.rating > 3 ? '#f59e0b' : '#ef4444'
+                    background: (product.rating?? 0) > 4 ? '#10b981'
+                      : (product.rating?? 0) > 3 ? '#f59e0b' : '#ef4444'
                   }}>
                     {product.rating?.toFixed(1)} <Star color='white' height={18} />
                   </div>
@@ -96,16 +96,10 @@ export function FavouritesProducts({ products, quantity, setQuantity,
                   )}
                 </div>
                 <button className='add-to-cart-button' onClick={() => {
-                  cartDispatch({
-                    type: 'ADD_TO_CART',
-                    payload: {
-                      id: product.id,
-                      thumbnail: product.thumbnail,
-                      title: product.title,
-                      price: product.price,
-                      qty: quantity[product.id] || 1
-                    }
-                  })
+                  cartDispatch(addToCart({
+                    ...product,
+                    qty:quantity[product.id]||1,
+                  }))
                   handleAddedMessage(product.id);
                 }}>
                   Add to Cart</button>

@@ -2,17 +2,18 @@ import { Link } from 'react-router-dom';
 import { CartHeader } from '../cartHeader/CartHeader';
 import { CartProducts } from '../components/CartProducts';
 import { PaymentSummary } from '../components/PaymentSummary';
-import { useCart } from '../context/CartContext';
+import { useSelector } from "react-redux";
 import './CartPage.css';
 import { Dispatch, SetStateAction } from 'react';
 import { Order } from '../types';
+import { RootState } from "../stores/store";
 
 interface CartPageProp {
   setOrders: Dispatch<SetStateAction<Order[]>>
 }
 
 export function CartPage({ setOrders }: CartPageProp) {
-  const { cart } = useCart()
+  const { cart } = useSelector((state:RootState)=>state.cart)
 
   return (
     <main className='cart-page-container'>

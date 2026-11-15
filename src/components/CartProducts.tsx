@@ -1,26 +1,20 @@
 import CartItem from "./CartItem";
-import { useCart } from "../context/CartContext"
+import { useDispatch,  useSelector } from "react-redux";
 import { useCallback } from "react";
 import './CartProducts.css'
+import { removeFromCart, updateCartQuantity } from "../stores/cartSlice";
+import { RootState } from '../stores/store';
 
 export function CartProducts() {
-  const { cart, dispatch } = useCart();
+  const dispatch=useDispatch();
+  const { cart } =useSelector((state:RootState)=>state.cart);
 
   const updateQuantity = useCallback((id: number, newQuantity: number) => {
-    dispatch({
-      type: 'UPDATE_QUANTITY',
-      payload: {
-        id: id,
-        qty: newQuantity
-      }
-    })
+    dispatch(updateCartQuantity({id,qty:newQuantity}))
   }, [dispatch]);
 
   const removeItem = useCallback((id: number) => {
-    dispatch({
-      type: 'REMOVE_FROM_CART',
-      payload: { id }
-    })
+    dispatch(removeFromCart(id));
   }, [dispatch]);
 
   return (

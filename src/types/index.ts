@@ -2,10 +2,11 @@
 export interface Product {
   id: number;
   thumbnail: string;
-  rating: number;
+  rating?: number;
   price: number;
   title: string;
   category?: string;
+  qty?:number;
 }
 
 

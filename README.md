@@ -9,8 +9,9 @@ A fully responsive fashion e-commerce web app built with React and TypeScript.
 - **Shopping Experience:** Add to Cart, Favourites(Wishlist), Quantity Management, Remove from Cart, Buy it Again, Cancel Order, Track package  
 - **Order Management:** Complete Order Page with order summary & price breakdown
 - **Order Tracking:** Real-time tracking page with dynamic Progress Bar (Preparing > Shipped > Out for Delivery > Delivered)
-- **State Management:** Global state handled with Context API + useReducer
+- **State Management:** Global state handled with Redux Toolkit (createSlice)
 - **Persistence:**  Favourites (Wishlist), Cart & Orders saved in Local Storage
+- **Authentication:**  Mock Signup, Login, and Profile with LocalStorage and Protected Routes
 - **Responsive:** Fully responsive for mobile, tablet & desktop
 
 ### 🛠️ Tech Stack

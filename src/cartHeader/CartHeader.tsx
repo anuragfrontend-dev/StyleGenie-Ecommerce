@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
 import { Heart, Lock } from 'lucide-react';
 import logo from '../assets/icon/logo.png';
-import { useCart } from '../context/CartContext';
-import { useFavourites } from '../context/FavouritesContext';
+import { useSelector } from 'react-redux';
 import './CartHeader.css'
+import { RootState } from '../stores/store';
 
 
 export function CartHeader() {
 
-  const { cart } = useCart();
-  const { like } = useFavourites();
+  const { cart } = useSelector((state:RootState)=>state.cart);
+  const { like } = useSelector((state:RootState)=>state.like);
 
   const totalLikeProducts = like.length;
 

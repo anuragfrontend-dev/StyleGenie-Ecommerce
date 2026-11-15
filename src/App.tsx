@@ -11,6 +11,8 @@ import { SignupPage } from './pages/SignupPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { ProfilePage } from './pages/ProfilePage';
 import { Product, Order } from './types';
+import { useSelector, UseSelector } from 'react-redux';
+import { RootState } from './stores/store';
 
 import './App.css'
 
@@ -21,6 +23,8 @@ export default function App() {
   const [addedMessageId, setAddedMessageId] = useState<number | null>(null);
   const [orders, setOrders] = useState<Order[]>(JSON.parse(localStorage.getItem('orders') || '[]'));
   const [search, setSearch] = useState<string>('')
+  const { cart }=useSelector((state:RootState)=>state.cart);
+  const { like }=useSelector((state:RootState)=>state.like);
 
   async function getData() {
     try {
@@ -36,6 +40,14 @@ export default function App() {
   useEffect(() => {
     getData()
   }, [])
+
+  useEffect(()=>{
+    localStorage.setItem('cart',JSON.stringify(cart));
+  }, [cart]);
+
+  useEffect(()=>{
+    localStorage.setItem('like',JSON.stringify(like))
+  }, [like]);
 
   useEffect(() => {
     localStorage.setItem('orders', JSON.stringify(orders));

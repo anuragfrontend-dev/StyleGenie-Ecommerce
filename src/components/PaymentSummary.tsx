@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { money } from "../utils/money";
 import dayjs from 'dayjs'
-import { useCart } from "../context/CartContext";
+import { useDispatch, useSelector } from "react-redux";
 import './PaymentSummary.css'
 import { Dispatch, SetStateAction } from "react";
 import { Order } from "../types";
+import { RootState } from "../stores/store";
+import { clearCart } from "../stores/cartSlice";
 
 interface PaymentSummaryProp {
   setOrders: Dispatch<SetStateAction<Order[]>>
@@ -12,7 +14,8 @@ interface PaymentSummaryProp {
 
 export function PaymentSummary({ setOrders }: PaymentSummaryProp) {
   const navigate = useNavigate();
-  const { cart, dispatch } = useCart();
+  const dispatch=useDispatch();
+  const { cart } = useSelector((state:RootState)=>state.cart)
 
   const onOrder = (totalAmount: number, totalQuantity: number) => {
     const newOrder: Order = {
@@ -24,7 +27,7 @@ export function PaymentSummary({ setOrders }: PaymentSummaryProp) {
     }
 
     setOrders(prev => ([newOrder, ...prev]));
-    dispatch({ type: 'CLEAR_CART' })
+    dispatch(clearCart())
   }
 
   const totalQuantity = cart.reduce((sum, cartItem) => sum + cartItem.productQuantity, 0);

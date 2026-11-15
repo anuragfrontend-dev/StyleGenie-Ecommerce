@@ -4,11 +4,11 @@ import './Header.css'
 import logo from '../assets/icon/logo.png'
 import order from '../assets/icon/order.png'
 import cartIcon from '../assets/icon/cart-icon.png'
-import { useCart } from '../context/CartContext';
-import { useFavourites } from '../context/FavouritesContext';
 import { useEffect, useState } from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { User } from '../types'
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../stores/store';
 
 interface HeaderProp {
   search?: string;
@@ -17,8 +17,8 @@ interface HeaderProp {
 
 export default function Header({ search, setSearch }: HeaderProp) {
 
-  const { cart } = useCart();
-  const { like } = useFavourites();
+  const { cart }=useSelector((state:RootState)=>state.cart);
+  const { like }=useSelector((state:RootState)=>state.like);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
 
   let totalLikeProducts = like.length;
